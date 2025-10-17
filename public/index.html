@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>E-Collective — Node.js + Express Demo</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent1:#0f172a;
+      --accent2:#2563eb;
+      --accent3:#06b6d4;
+      --radius:14px;
+      --shadow: 0 12px 36px rgba(12,18,40,0.08);
+    }
+    *{box-sizing:border-box}
+    html,body,#root{height:100%}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: linear-gradient(180deg,var(--bg),#eef2f7);
+      color:var(--accent1);
+      -webkit-font-smoothing:antialiased;
+    }
+    .container{ width:92%; max-width:1200px; margin:0 auto; padding:18px 0 }
+
+    /* Header */
+    header {
+      display:flex; align-items:center; justify-content:space-between;
+      background:white; padding:12px 0; border-radius:12px; box-shadow:0 6px 18px rgba(15,23,42,0.03);
+    }
+    .brand { display:flex; align-items:center; gap:12px; margin-left:12px }
+    .logo { width:50px; height:50px; border-radius:10px; background:linear-gradient(135deg,var(--accent2),var(--accent3)); display:flex; align-items:center; justify-content:center; color:white; font-weight:800 }
+    nav a { margin: 0 10px; color:var(--muted); text-decoration:none; font-weight:600 }
+    .header-right { display:flex; align-items:center; gap:12px; margin-right:12px }
+
+    /* Hero */
+    .hero { margin-top:18px; display:flex; gap:18px; align-items:center }
+    .hero-card { flex:1; background: linear-gradient(180deg,#fff,#fbfdff); border-radius:14px; padding:28px; box-shadow:var(--shadow); display:flex; gap:20px; align-items:center }
+    .hero-text h1{ margin:0; font-size:28px }
+    .hero-text p{ color:var(--muted); margin-top:8px }
+    .hero-cta { margin-top:14px; display:flex; gap:12px }
+
+    /* Products */
+    .products { margin-top:20px; display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:18px }
+    .card { background:var(--card); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); transition: transform .14s; display:flex; flex-direction:column }
+    .card:hover { transform: translateY(-8px) }
+    .card .img { height:170px; overflow:hidden }
+    .card .img img { width:100%; height:100%; object-fit:cover; display:block; transition: transform .5s }
+    .card:hover .img img { transform: scale(1.05) }
+    .card .body { padding:14px; display:flex; flex-direction:column; gap:8px; flex:1 }
+    .title { font-weight:700 }
+    .price { font-weight:800; color:var(--accent2) }
+    .muted { color:var(--muted); font-size:13px }
+
+    /* Footer */
+    footer { margin-top:30px; text-align:center; color:var(--muted); padding:18px 0 }
+
+    /* Utilities */
+    .btn { padding:10px 14px; border-radius:10px; border: none; cursor:pointer; font-weight:700 }
+    .btn.primary { background:linear-gradient(90deg,var(--accent2),var(--accent3)); color:white }
+    .search { padding:8px 12px; border-radius:10px; background:#fff; display:flex; gap:8px; align-items:center; box-shadow:0 6px 18px rgba(15,23,42,0.03) }
+    .search input { border:0; outline:none; background:transparent }
+
+    /* Responsive */
+    @media (max-width:800px){
+      .hero { flex-direction:column; align-items:stretch }
+      header { flex-direction:column; gap:10px; padding:14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div style="display:flex; align-items:center;">
+        <div class="brand">
+          <div class="logo">EC</div>
+          <div>
+            <div style="font-weight:800">E-Collective</div>
+            <div style="font-size:12px; color:var(--muted)">Node.js + Express demo</div>
+          </div>
+        </div>
+        <nav style="margin-left:22px">
+          <a href="#products">Products</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#94a3b8" stroke-width="1.6"/></svg>
+          <input id="searchBox" placeholder="Search products..." />
+        </div>
+        <button class="btn">Sign in</button>
+        <button class="btn primary" id="viewCartBtn">Cart</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card">
+          <div style="flex:1" class="hero-text">
+            <div style="display:inline-block;background:#fffbeb;padding:8px 10px;border-radius:10px;font-weight:800;color:#92400e">Free shipping • 30-day returns</div>
+            <h1 style="margin-top:12px">Beautiful products — served by Node.js</h1>
+            <p>Dynamic content is served by an Express API. This demo shows a colorful responsive product grid with images and pricing.</p>
+            <div class="hero-cta">
+              <button class="btn primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop featured</button>
+              <button class="btn" onclick="alert('Contact sales - demo')">Contact sales</button>
+            </div>
+          </div>
+          <div style="width:320px; text-align:center">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=80&auto=format&fit=crop" alt="shopping" style="width:100%; border-radius:10px; box-shadow:0 10px 30px rgba(15,23,42,0.08)" />
+            <div style="margin-top:10px; color:var(--muted); font-size:13px">Curated picks — refreshed weekly</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" style="margin-top:20px">
+        <h2>Featured products</h2>
+        <div id="grid" class="products" aria-live="polite">
+          <!-- product cards injected here -->
+        </div>
+      </section>
+
+      <section id="about" style="margin-top:26px; background:white; padding:18px; border-radius:10px; box-shadow:0 8px 24px rgba(15,23,42,0.04)">
+        <h3 style="margin-top:0">Why shop with us?</h3>
+        <p style="color:var(--muted)">This page is served by Node.js + Express. Replace the API data with your own database later.</p>
+      </section>
+    </main>
+
+    <footer>
+      <div style="color:var(--muted)">© <span id="year"></span> E-Collective — Node demo</div>
+    </footer>
+  </div>
+
+  <script>
+    // Fill current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Fetch products from server API and render
+    async function fetchProducts() {
+      try {
+        const res = await fetch('/api/products');
+        const products = await res.json();
+        renderProducts(products);
+      } catch (err) {
+        console.error(err);
+        document.getElementById('grid').innerHTML = '<div style="color:#ef4444">Failed to load products.</div>';
+      }
+    }
+
+    function renderProducts(products) {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="img"><img src="${p.img}" alt="${p.name}" loading="lazy"/></div>
+          <div class="body">
+            <div style="display:flex; justify-content:space-between; align-items:center">
+              <div class="title">${p.name}</div>
+              <div class="price">$${p.price.toFixed(2)}</div>
+            </div>
+            <div class="muted">${p.rating} ★</div>
+            <div style="margin-top:8px; color:var(--muted); font-size:14px">${p.description}</div>
+            <div style="margin-top:12px; display:flex; gap:8px">
+              <button class="btn primary" onclick="addToCart(${p.id})">Add to cart</button>
+              <button class="btn" onclick="alert('Preview: ${escapeHtml(p.name)}')">View</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Very small cart demo (client-side only)
+    const CART_KEY = 'demo_cart';
+    function loadCart() {
+      try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch(e) { return []; }
+    }
+    function saveCart(cart) { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+
+    function addToCart(productId) {
+      fetch('/api/products').then(r=>r.json()).then(products => {
+        const prod = products.find(p=>p.id===productId);
+        if (!prod) return alert('Product not found');
+        const cart = loadCart();
+        const found = cart.find(i=>i.id===productId);
+        if (found) found.qty += 1; else cart.push({...prod, qty:1});
+        saveCart(cart);
+        alert(prod.name + ' added to cart (demo)');
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    }
+
+    // wire search box
+    document.getElementById('searchBox').addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('#grid .card');
+      cards.forEach(card => {
+        const name = card.querySelector('.title').textContent.toLowerCase();
+        const desc = card.querySelector('.body > div:nth-child(3)') ? card.querySelector('.body > div:nth-child(3)').textContent.toLowerCase() : '';
+        const show = (!q) || name.includes(q) || desc.includes(q);
+        card.style.display = show ? '' : 'none';
+      });
+    });
+
+    // initial load
+    fetchProducts();
+  </script>
+</body>
+</html>
